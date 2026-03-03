@@ -23,18 +23,20 @@ exports.handler = async function (event) {
   try {
     let resultUrl = null;
 
-   if (mode === "placement") {
+if (mode === "placement") {
   if (!prompt) return { statusCode: 400, body: JSON.stringify({ error: "No prompt provided" }) };
 
-  const res = await fetch("https://api.replicate.com/v1/models/stability-ai/stable-diffusion-img2img/predictions", {
+  const res = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST", headers,
     body: JSON.stringify({
+      version: "e490d072a34a94a11e9711ed5a6ba621c3fab884eda1665d9d3a282d65a21180",
       input: {
+        prompt: `${prompt}, photorealistic, high quality, professional photography`,
         image: imageBase64,
-        prompt: `${prompt}, photorealistic, high quality, professional photography, seamlessly integrated`,
-        prompt_strength: 0.75,
-        num_inference_steps: 30,
+        mask: maskBase64 || null,
+        num_inference_steps: 25,
         guidance_scale: 7.5,
+        inpaint_full_res: true,
       },
     }),
   });

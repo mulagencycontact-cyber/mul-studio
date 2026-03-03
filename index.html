@@ -7,43 +7,28 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f9f8f6;
-      --surface: #ffffff;
-      --border: #e8e5e0;
-      --text: #1a1814;
-      --muted: #8a8680;
-      --accent: #2d6a4f;
-      --accent-light: #e8f4ee;
-      --gold-light: #fdf8ec;
-      --radius: 16px;
+      --bg: #f9f8f6; --surface: #ffffff; --border: #e8e5e0; --text: #1a1814;
+      --muted: #8a8680; --accent: #2d6a4f; --accent-light: #e8f4ee;
+      --gold-light: #fdf8ec; --radius: 16px;
       --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-
     header { padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10; }
     .logo { font-family: 'DM Serif Display', serif; font-size: 1.4rem; letter-spacing: -0.02em; }
     .logo span { color: var(--accent); font-style: italic; }
     .header-right { display: flex; align-items: center; gap: 12px; }
-    .usage-pill { font-size: 0.75rem; font-weight: 500; background: var(--accent-light); color: var(--accent); padding: 5px 14px; border-radius: 100px; letter-spacing: 0.03em; }
+    .usage-pill { font-size: 0.75rem; font-weight: 500; background: var(--accent-light); color: var(--accent); padding: 5px 14px; border-radius: 100px; }
     .usage-pill.low { background: #fef3e2; color: #b45309; }
-    .upgrade-btn-small { padding: 7px 16px; border-radius: 100px; border: none; background: var(--accent); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s; display: none; }
-    .upgrade-btn-small:hover { opacity: 0.85; }
-
+    .upgrade-btn-small { padding: 7px 16px; border-radius: 100px; border: none; background: var(--accent); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; display: none; }
     .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; }
     .tab { padding: 14px 24px; font-size: 0.88rem; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
     .tab:hover { color: var(--text); }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
     main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 24px 80px; gap: 28px; }
-
     .tab-panel { display: none; width: 100%; max-width: 960px; flex-direction: column; gap: 20px; }
     .tab-panel.active { display: flex; animation: fadeUp 0.3s ease both; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
     .upload-zone { width: 100%; border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 44px 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative; }
     .upload-zone:hover, .upload-zone.dragging { border-color: var(--accent); background: var(--accent-light); }
     .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -51,7 +36,6 @@
     .upload-icon svg { stroke: var(--accent); }
     .upload-zone h3 { font-size: 0.95rem; font-weight: 500; }
     .upload-zone p { font-size: 0.82rem; color: var(--muted); }
-
     .controls-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: var(--shadow); }
     .controls-bar label { font-size: 0.75rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
     .mode-btn { padding: 7px 16px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; font-weight: 500; color: var(--text); cursor: pointer; transition: all 0.15s; }
@@ -63,7 +47,6 @@
     .action-btn:hover { background: var(--accent); }
     .action-btn:active { transform: scale(0.97); }
     .action-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; background: var(--text); }
-
     .canvas-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 620px) { .canvas-row { grid-template-columns: 1fr; } }
     .img-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; }
@@ -73,20 +56,36 @@
     .empty-state svg { opacity: 0.25; }
     .empty-state p { font-size: 0.82rem; font-weight: 300; text-align: center; }
 
+    /* Placement */
     .placement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 620px) { .placement-grid { grid-template-columns: 1fr; } }
-    .placement-upload { border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; position: relative; min-height: 180px; justify-content: center; }
+    .placement-upload { border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--surface); padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; position: relative; min-height: 160px; justify-content: center; }
     .placement-upload:hover { border-color: var(--accent); background: var(--accent-light); }
     .placement-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .placement-upload .thumb { width: 100%; max-height: 140px; object-fit: contain; border-radius: 8px; display: none; }
-    .placement-upload h4 { font-size: 0.88rem; font-weight: 500; }
-    .placement-upload p { font-size: 0.78rem; color: var(--muted); text-align: center; }
-    .placement-upload-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; }
+    .placement-upload .thumb { width: 100%; max-height: 120px; object-fit: contain; border-radius: 8px; display: none; }
+    .placement-upload h4 { font-size: 0.86rem; font-weight: 500; text-align: center; }
+    .placement-upload p { font-size: 0.76rem; color: var(--muted); text-align: center; }
+    .placement-upload-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; }
     .placement-upload-icon svg { stroke: var(--accent); }
+
+    /* Mask painter */
+    .mask-section { display: flex; flex-direction: column; gap: 10px; }
+    .mask-section-label { font-size: 0.75rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .mask-canvas-wrap { position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: #f4f3f1; cursor: crosshair; display: none; }
+    .mask-canvas-wrap canvas { display: block; width: 100%; }
+    #maskOverlay { position: absolute; inset: 0; pointer-events: none; opacity: 0.55; }
+    .mask-empty { padding: 32px; text-align: center; font-size: 0.82rem; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .mask-empty svg { opacity: 0.2; }
+    .brush-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .brush-controls label { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+    .brush-controls input[type="range"] { width: 80px; height: 3px; -webkit-appearance: none; background: var(--border); border-radius: 2px; outline: none; }
+    .brush-controls input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--text); cursor: pointer; }
+    .clear-mask-btn { padding: 5px 14px; border-radius: 100px; border: 1px solid var(--border); background: white; font-family: 'DM Sans', sans-serif; font-size: 0.76rem; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .clear-mask-btn:hover { border-color: var(--accent); color: var(--accent); }
 
     .prompt-area { display: flex; flex-direction: column; gap: 8px; }
     .prompt-area label { font-size: 0.78rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .prompt-area textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--surface); resize: none; height: 90px; outline: none; transition: border-color 0.15s; line-height: 1.5; }
+    .prompt-area textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--surface); resize: none; height: 80px; outline: none; transition: border-color 0.15s; line-height: 1.5; }
     .prompt-area textarea:focus { border-color: var(--accent); }
     .prompt-examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
     .prompt-chip { padding: 5px 12px; border-radius: 100px; border: 1px solid var(--border); background: white; font-size: 0.75rem; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
@@ -98,11 +97,11 @@
     .slider-group label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 500; }
     .slider-group label span { color: var(--accent); font-weight: 600; }
     input[type="range"] { -webkit-appearance: none; width: 100%; height: 3px; background: var(--border); border-radius: 2px; outline: none; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: var(--text); cursor: pointer; transition: background 0.15s; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: var(--text); cursor: pointer; }
     input[type="range"]::-webkit-slider-thumb:hover { background: var(--accent); }
 
     .bottom-row { display: flex; gap: 10px; justify-content: flex-end; align-items: center; }
-    .reset-btn { padding: 9px 18px; border-radius: 100px; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--muted); cursor: pointer; transition: color 0.15s; }
+    .reset-btn { padding: 9px 18px; border-radius: 100px; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--muted); cursor: pointer; }
     .reset-btn:hover { color: var(--text); }
     .download-btn { padding: 9px 20px; border-radius: 100px; border: 1.5px solid var(--border); background: white; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.15s; color: var(--text); }
     .download-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -115,29 +114,26 @@
     .paywall-card h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; letter-spacing: -0.02em; margin-bottom: 10px; }
     .paywall-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 24px; }
     .price-display { background: var(--accent-light); border-radius: 14px; padding: 14px; margin-bottom: 20px; }
-    .price-display .amount { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--accent); letter-spacing: -0.03em; }
+    .price-display .amount { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--accent); }
     .price-display .per { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
     .perks { text-align: left; margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
     .perk { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
     .perk-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.7rem; color: var(--accent); font-weight: 700; }
-    .subscribe-btn { width: 100%; padding: 14px; border-radius: 100px; border: none; background: var(--accent); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s; margin-bottom: 12px; }
+    .subscribe-btn { width: 100%; padding: 14px; border-radius: 100px; border: none; background: var(--accent); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; cursor: pointer; margin-bottom: 12px; }
     .subscribe-btn:hover { opacity: 0.88; }
     .paywall-dismiss { font-size: 0.82rem; color: var(--muted); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; }
-    .paywall-dismiss:hover { color: var(--text); }
 
-    #progress-overlay { display: none; position: fixed; inset: 0; background: rgba(249,248,246,0.9); backdrop-filter: blur(10px); z-index: 100; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+    #progress-overlay { display: none; position: fixed; inset: 0; background: rgba(249,248,246,0.9); backdrop-filter: blur(10px); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
     #progress-overlay.show { display: flex; }
     .progress-card { background: white; border: 1px solid var(--border); border-radius: 20px; padding: 36px 48px; display: flex; flex-direction: column; align-items: center; gap: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.08); min-width: 300px; }
     .spinner { width: 38px; height: 38px; border: 2.5px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     #progress-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
-    #progress-text { font-size: 0.83rem; color: var(--muted); font-weight: 300; text-align: center; max-width: 220px; }
+    #progress-text { font-size: 0.83rem; color: var(--muted); text-align: center; max-width: 220px; }
     .progress-bar-wrap { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
     .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s ease; width: 0%; }
-
     #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1814; color: white; padding: 11px 22px; border-radius: 100px; font-size: 0.84rem; z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.2s; white-space: nowrap; }
     #toast.show { opacity: 1; }
-
     footer { text-align: center; padding: 20px; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--border); }
     footer strong { color: var(--accent); }
   </style>
@@ -167,7 +163,6 @@
       <h3>Drop a photo to enhance</h3>
       <p>JPG, PNG, WEBP · up to 10 MB</p>
     </div>
-
     <div id="enhanceWorkspace" style="display:none; flex-direction:column; gap:20px;">
       <div class="controls-bar">
         <label>AI Mode</label>
@@ -180,7 +175,6 @@
           Enhance with AI
         </button>
       </div>
-
       <div class="canvas-row">
         <div class="img-card"><div class="card-label">Before</div><canvas id="originalCanvas"></canvas></div>
         <div class="img-card">
@@ -189,7 +183,6 @@
           <img id="enhanceOutputImg" style="display:none;" alt="Enhanced"/>
         </div>
       </div>
-
       <div class="adjustments">
         <div class="adj-title">Fine-tune</div>
         <div class="slider-group"><label>Brightness <span id="bVal">0</span></label><input type="range" id="brightness" min="-80" max="80" value="0"/></div>
@@ -198,7 +191,6 @@
         <div class="slider-group"><label>Warmth <span id="wVal">0</span></label><input type="range" id="warmth" min="-50" max="50" value="0"/></div>
         <div class="slider-group"><label>Vignette <span id="vVal">0</span></label><input type="range" id="vignette" min="0" max="100" value="0"/></div>
       </div>
-
       <div class="bottom-row">
         <button class="reset-btn" id="enhanceResetBtn">↩ New photo</button>
         <button class="download-btn" id="enhanceDownloadBtn" disabled>
@@ -212,36 +204,70 @@
   <!-- TAB 2: PRODUCT PLACEMENT -->
   <div class="tab-panel" id="tab-placement">
 
+    <!-- Row 1: Upload model + upload product -->
     <div class="placement-grid">
       <div class="placement-upload" id="modelUploadZone">
         <input type="file" accept="image/*" id="modelFileInput"/>
         <img class="thumb" id="modelThumb" alt="Model"/>
         <div class="placement-upload-icon" id="modelUploadIcon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
         <h4 id="modelUploadTitle">Upload Model / Scene Photo</h4>
-        <p id="modelUploadDesc">Base photo — model, flat lay, or object</p>
+        <p id="modelUploadDesc">The base photo — model, flat lay, or object</p>
       </div>
 
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="prompt-area">
-          <label>Describe the placement</label>
-          <textarea id="placementPrompt" placeholder="e.g. model wearing a gold chain necklace, elegant studio lighting&#10;e.g. diamond ring on model's finger, close up&#10;e.g. designer handbag in model's hand, lifestyle photo"></textarea>
-        </div>
+      <div class="placement-upload" id="productUploadZone">
+        <input type="file" accept="image/*" id="productFileInput"/>
+        <img class="thumb" id="productThumb" alt="Product"/>
+        <div class="placement-upload-icon" id="productUploadIcon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+        <h4 id="productUploadTitle">Upload Product Photo</h4>
+        <p id="productUploadDesc">The item to place — jewellery, outfit, bag, etc.</p>
+      </div>
+    </div>
+
+    <!-- Row 2: Paint mask on model photo -->
+    <div class="mask-section">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
         <div>
-          <div style="font-size:0.72rem; color:var(--muted); margin-bottom:8px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">Quick examples</div>
-          <div class="prompt-examples">
-            <span class="prompt-chip" data-prompt="model wearing a gold chain necklace, elegant lighting, fashion photo">💛 Gold necklace</span>
-            <span class="prompt-chip" data-prompt="diamond ring on model's finger, close up, luxury jewelry photography">💍 Ring on finger</span>
-            <span class="prompt-chip" data-prompt="model wearing a silk dress, studio lighting, high fashion editorial">👗 Change outfit</span>
-            <span class="prompt-chip" data-prompt="designer handbag in model's hand, lifestyle photography, natural light">👜 Handbag in hand</span>
-            <span class="prompt-chip" data-prompt="luxury watch on model's wrist, close up, product photography">⌚ Wrist watch</span>
-            <span class="prompt-chip" data-prompt="product placed on a white marble table, minimalist, soft shadows">🪨 On marble table</span>
-          </div>
+          <div class="mask-section-label">Step 2 — Paint where the product should go</div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:3px;">Upload your model photo above, then paint over the placement area below</div>
+        </div>
+        <div class="brush-controls" id="brushControls" style="display:none;">
+          <label>Brush size</label>
+          <input type="range" id="brushSize" min="5" max="60" value="20"/>
+          <button class="clear-mask-btn" id="clearMaskBtn">Clear mask</button>
+        </div>
+      </div>
+      <div class="mask-canvas-wrap" id="maskCanvasWrap">
+        <canvas id="maskBgCanvas"></canvas>
+        <canvas id="maskOverlay"></canvas>
+        <div class="mask-empty" id="maskEmpty">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <p>Upload model photo first, then paint the placement area here</p>
         </div>
       </div>
     </div>
 
+    <!-- Row 3: Prompt -->
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="prompt-area">
+        <label>Step 3 — Describe the placement</label>
+        <textarea id="placementPrompt" placeholder="e.g. gold chain necklace draped elegantly&#10;e.g. diamond ring on the finger&#10;e.g. wearing a red silk dress&#10;e.g. designer handbag held naturally"></textarea>
+      </div>
+      <div>
+        <div style="font-size:0.72rem; color:var(--muted); margin-bottom:8px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">Quick examples</div>
+        <div class="prompt-examples">
+          <span class="prompt-chip" data-prompt="gold chain necklace draped elegantly around the neck, luxury jewelry">💛 Gold necklace</span>
+          <span class="prompt-chip" data-prompt="diamond ring on the finger, close up, luxury jewelry photography">💍 Ring on finger</span>
+          <span class="prompt-chip" data-prompt="wearing a red silk dress, high fashion editorial, studio lighting">👗 Change outfit</span>
+          <span class="prompt-chip" data-prompt="designer handbag held naturally, lifestyle photography, natural light">👜 Handbag</span>
+          <span class="prompt-chip" data-prompt="luxury watch on the wrist, close up, product photography">⌚ Watch</span>
+          <span class="prompt-chip" data-prompt="product placed on a white marble surface, minimalist, soft shadows">🪨 On surface</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generate -->
     <div class="controls-bar">
-      <div style="font-size:0.84rem; color:var(--muted);">AI places your described product into the scene realistically</div>
+      <div style="font-size:0.84rem; color:var(--muted);">Upload photos → paint the area → describe → generate</div>
       <div class="spacer"></div>
       <button class="action-btn" id="placementBtn">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -249,6 +275,7 @@
       </button>
     </div>
 
+    <!-- Before / After result -->
     <div class="canvas-row">
       <div class="img-card"><div class="card-label">Original</div><img id="placementOrigImg" style="display:none;" alt="Original"/><div class="empty-state" id="placementOrigEmpty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>Upload a photo<br/>to get started</p></div></div>
       <div class="img-card">
@@ -276,7 +303,7 @@
   <div class="paywall-card">
     <div class="paywall-icon">✦</div>
     <h2>You've used your 5 free enhancements</h2>
-    <p>Upgrade to MUL Studio Pro for unlimited AI photo enhancements, product placements, and priority processing.</p>
+    <p>Upgrade to MUL Studio Pro for unlimited AI enhancements and product placements.</p>
     <div class="price-display">
       <div class="amount">$9.99</div>
       <div class="per">per month · cancel anytime</div>
@@ -292,7 +319,7 @@
   </div>
 </div>
 
-<!-- Progress overlay -->
+<!-- Progress -->
 <div id="progress-overlay">
   <div class="progress-card">
     <div class="spinner"></div>
@@ -301,249 +328,14 @@
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
 const FREE_USES = 5;
-
-function getUsesLeft() {
-  const subscribed = localStorage.getItem('mul_subscribed') === 'true';
-  if (subscribed) return Infinity;
-  return Math.max(0, FREE_USES - parseInt(localStorage.getItem('mul_uses') || '0'));
-}
-function incrementUses() {
-  localStorage.setItem('mul_uses', parseInt(localStorage.getItem('mul_uses') || '0') + 1);
-}
-function isSubscribed() { return localStorage.getItem('mul_subscribed') === 'true'; }
-
+function getUsesLeft() { return localStorage.getItem('mul_subscribed')==='true' ? Infinity : Math.max(0, FREE_USES - parseInt(localStorage.getItem('mul_uses')||'0')); }
+function incrementUses() { localStorage.setItem('mul_uses', parseInt(localStorage.getItem('mul_uses')||'0')+1); }
+function isSubscribed() { return localStorage.getItem('mul_subscribed')==='true'; }
 function updateUsagePill() {
-  const left = getUsesLeft();
-  const pill = document.getElementById('usagePill');
-  const btn  = document.getElementById('headerUpgradeBtn');
-  if (isSubscribed()) {
-    pill.textContent = '✦ Pro · Unlimited'; pill.classList.remove('low'); btn.style.display = 'none';
-  } else {
-    pill.textContent = `✦ ${left} free use${left !== 1 ? 's' : ''} remaining`;
-    pill.classList.toggle('low', left <= 2);
-    btn.style.display = left <= 3 ? 'block' : 'none';
-  }
-}
-
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('subscribed') === 'true') {
-  localStorage.setItem('mul_subscribed', 'true');
-  window.history.replaceState({}, '', '/');
-  showToast('🎉 Welcome to MUL Studio Pro!');
-}
-updateUsagePill();
-
-// Tabs
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-  });
-});
-
-// ── ENHANCE ──────────────────────────────────
-let enhanceFile = null, enhancedUrl = null, enhanceMode = 'both';
-const originalCanvas = document.getElementById('originalCanvas');
-const origCtx = originalCanvas.getContext('2d');
-const enhanceUploadZone = document.getElementById('enhanceUploadZone');
-const enhanceFileInput  = document.getElementById('enhanceFileInput');
-const enhanceWorkspace  = document.getElementById('enhanceWorkspace');
-
-enhanceUploadZone.addEventListener('dragover', e => { e.preventDefault(); enhanceUploadZone.classList.add('dragging'); });
-enhanceUploadZone.addEventListener('dragleave', () => enhanceUploadZone.classList.remove('dragging'));
-enhanceUploadZone.addEventListener('drop', e => { e.preventDefault(); enhanceUploadZone.classList.remove('dragging'); if (e.dataTransfer.files[0]) loadEnhanceFile(e.dataTransfer.files[0]); });
-enhanceFileInput.addEventListener('change', () => { if (enhanceFileInput.files[0]) loadEnhanceFile(enhanceFileInput.files[0]); });
-
-function loadEnhanceFile(file) {
-  if (file.size > 10*1024*1024) { showToast('File too large — max 10 MB'); return; }
-  enhanceFile = file; enhancedUrl = null;
-  document.getElementById('enhanceOutputImg').style.display = 'none';
-  document.getElementById('enhanceEmptyState').style.display = 'flex';
-  document.getElementById('enhanceDownloadBtn').disabled = true;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      let w = img.width, h = img.height;
-      const max = 800;
-      if (w > max || h > max) { const r = Math.min(max/w, max/h); w = Math.round(w*r); h = Math.round(h*r); }
-      originalCanvas.width = w; originalCanvas.height = h;
-      origCtx.drawImage(img, 0, 0, w, h);
-      enhanceWorkspace.style.display = 'flex';
-      enhanceUploadZone.style.display = 'none';
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-document.querySelectorAll('[data-mode]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); enhanceMode = btn.dataset.mode;
-  });
-});
-
-document.getElementById('enhanceBtn').addEventListener('click', async () => {
-  if (!enhanceFile || !checkUsage()) return;
-  const btn = document.getElementById('enhanceBtn'); btn.disabled = true;
-  showProgress('Preparing image…', 5);
-  try {
-    const base64 = await fileToBase64(enhanceFile);
-    setProgress(10, 'Sending to AI…');
-    const res = await fetch('/.netlify/functions/enhance', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: base64, mode: enhanceMode }) });
-    setProgress(30, 'AI is processing…');
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error || `Error ${res.status}`); }
-    const tick = setInterval(() => { const b = document.getElementById('progressBar'); const c = parseFloat(b.style.width)||30; if (c < 88) setProgress(c+3, getProgressMsg(c)); }, 2000);
-    const data = await res.json(); clearInterval(tick);
-    if (!data.outputUrl) throw new Error('No output from AI');
-    enhancedUrl = data.outputUrl;
-    setProgress(95, 'Loading result…');
-    const img = document.getElementById('enhanceOutputImg');
-    img.src = enhancedUrl;
-    img.onload = () => { document.getElementById('enhanceEmptyState').style.display='none'; img.style.display='block'; document.getElementById('enhanceDownloadBtn').disabled=false; setProgress(100,'Done!'); setTimeout(hideProgress,600); incrementUses(); updateUsagePill(); };
-  } catch(err) { hideProgress(); showToast('Error: ' + err.message); }
-  finally { btn.disabled = false; }
-});
-
-document.getElementById('enhanceDownloadBtn').addEventListener('click', async () => {
-  if (!enhancedUrl) return;
-  try { const r = await fetch(enhancedUrl); const b = await r.blob(); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'mul-studio-enhanced.png'; a.click(); }
-  catch { window.open(enhancedUrl, '_blank'); }
-});
-
-document.getElementById('enhanceResetBtn').addEventListener('click', () => {
-  enhanceFile = null; enhancedUrl = null;
-  enhanceWorkspace.style.display = 'none'; enhanceUploadZone.style.display = 'flex';
-  document.getElementById('enhanceOutputImg').style.display = 'none';
-  document.getElementById('enhanceEmptyState').style.display = 'flex';
-  document.getElementById('enhanceDownloadBtn').disabled = true;
-  enhanceFileInput.value = '';
-});
-
-['brightness','contrast','saturation','warmth','vignette'].forEach(id => {
-  document.getElementById(id).addEventListener('input', function() {
-    document.getElementById(id[0]+'Val').textContent = this.value;
-  });
-});
-
-// ── PLACEMENT ────────────────────────────────
-let modelFile = null, placementResultUrl = null;
-const modelFileInput = document.getElementById('modelFileInput');
-modelFileInput.addEventListener('change', () => { if (modelFileInput.files[0]) loadModelFile(modelFileInput.files[0]); });
-
-function loadModelFile(file) {
-  modelFile = file;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const thumb = document.getElementById('modelThumb');
-    thumb.src = e.target.result; thumb.style.display = 'block';
-    document.getElementById('modelUploadIcon').style.display = 'none';
-    document.getElementById('modelUploadTitle').textContent = 'Photo loaded ✓';
-    document.getElementById('modelUploadDesc').textContent = file.name;
-    const orig = document.getElementById('placementOrigImg');
-    orig.src = e.target.result; orig.style.display = 'block';
-    document.getElementById('placementOrigEmpty').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-document.querySelectorAll('.prompt-chip').forEach(chip => {
-  chip.addEventListener('click', () => { document.getElementById('placementPrompt').value = chip.dataset.prompt; });
-});
-
-document.getElementById('placementBtn').addEventListener('click', async () => {
-  if (!modelFile) { showToast('Please upload a model or scene photo first'); return; }
-  const prompt = document.getElementById('placementPrompt').value.trim();
-  if (!prompt) { showToast('Please describe the product placement'); return; }
-  if (!checkUsage()) return;
-  const btn = document.getElementById('placementBtn'); btn.disabled = true;
-  showProgress('Preparing placement…', 5);
-  try {
-    const base64 = await fileToBase64(modelFile);
-    setProgress(15, 'Sending to AI…');
-    const res = await fetch('/.netlify/functions/enhance', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: base64, mode: 'placement', prompt }) });
-    setProgress(30, 'AI is compositing…');
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error || `Error ${res.status}`); }
-    const tick = setInterval(() => { const b = document.getElementById('progressBar'); const c = parseFloat(b.style.width)||30; if (c < 88) setProgress(c+3, getProgressMsg(c)); }, 2000);
-    const data = await res.json(); clearInterval(tick);
-    if (!data.outputUrl) throw new Error('No output from AI');
-    placementResultUrl = data.outputUrl;
-    setProgress(95, 'Loading result…');
-    const img = document.getElementById('placementOutputImg');
-    img.src = placementResultUrl;
-    img.onload = () => { document.getElementById('placementResultEmpty').style.display='none'; img.style.display='block'; document.getElementById('placementDownloadBtn').disabled=false; setProgress(100,'Done!'); setTimeout(hideProgress,600); incrementUses(); updateUsagePill(); };
-  } catch(err) { hideProgress(); showToast('Error: ' + err.message); }
-  finally { btn.disabled = false; }
-});
-
-document.getElementById('placementDownloadBtn').addEventListener('click', async () => {
-  if (!placementResultUrl) return;
-  try { const r = await fetch(placementResultUrl); const b = await r.blob(); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'mul-studio-placement.png'; a.click(); }
-  catch { window.open(placementResultUrl, '_blank'); }
-});
-
-document.getElementById('placementResetBtn').addEventListener('click', () => {
-  modelFile = null; placementResultUrl = null;
-  document.getElementById('modelThumb').style.display = 'none';
-  document.getElementById('modelUploadIcon').style.display = 'flex';
-  document.getElementById('modelUploadTitle').textContent = 'Upload Model / Scene Photo';
-  document.getElementById('modelUploadDesc').textContent = 'Base photo — model, flat lay, or object';
-  document.getElementById('placementOrigImg').style.display = 'none';
-  document.getElementById('placementOrigEmpty').style.display = 'flex';
-  document.getElementById('placementOutputImg').style.display = 'none';
-  document.getElementById('placementResultEmpty').style.display = 'flex';
-  document.getElementById('placementDownloadBtn').disabled = true;
-  document.getElementById('placementPrompt').value = '';
-  modelFileInput.value = '';
-});
-
-// ── PAYWALL ──────────────────────────────────
-function checkUsage() {
-  if (isSubscribed()) return true;
-  if (getUsesLeft() <= 0) { showPaywall(); return false; }
-  return true;
-}
-function showPaywall() { document.getElementById('paywall-modal').classList.add('show'); }
-function hidePaywall() { document.getElementById('paywall-modal').classList.remove('show'); }
-document.getElementById('paywallDismiss').addEventListener('click', hidePaywall);
-document.getElementById('headerUpgradeBtn').addEventListener('click', showPaywall);
-document.getElementById('paywall-modal').addEventListener('click', e => { if (e.target === document.getElementById('paywall-modal')) hidePaywall(); });
-
-document.getElementById('subscribeBtn').addEventListener('click', async () => {
-  document.getElementById('subscribeBtn').textContent = 'Redirecting to Stripe…';
-  try {
-    const res  = await fetch('/.netlify/functions/create-checkout', { method: 'POST' });
-    const data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { throw new Error(data.error || 'Could not create checkout'); }
-  } catch(err) {
-    showToast('Error: ' + err.message);
-    document.getElementById('subscribeBtn').textContent = 'Subscribe for $9.99/month';
-  }
-});
-
-// ── HELPERS ──────────────────────────────────
-function fileToBase64(file) {
-  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(new Error('Failed to read file')); r.readAsDataURL(file); });
-}
-function getProgressMsg(pct) {
-  if (pct < 40) return 'AI models warming up…';
-  if (pct < 60) return 'Applying enhancements…';
-  if (pct < 75) return 'Refining details…';
-  return 'Almost there…';
-}
-function showProgress(msg, pct) { document.getElementById('progress-text').textContent = msg; document.getElementById('progressBar').style.width=(pct||0)+'%'; document.getElementById('progress-overlay').classList.add('show'); }
-function setProgress(pct, msg) { document.getElementById('progressBar').style.width=pct+'%'; if (msg) document.getElementById('progress-text').textContent=msg; }
-function hideProgress() { document.getElementById('progress-overlay').classList.remove('show'); document.getElementById('progressBar').style.width='0%'; }
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),4000); }
-</script>
-</body>
-</html>
+  const left = getUsesLeft(), pill = document.getElementById('usagePill'), btn = document.getElementById('headerUpgradeBtn');
+  if (isSubscribed()) { pill.textContent='✦ Pro · Unlimited'; pill.classList.remove('low'); btn.style.display='none'; }
+  else { pill.textContent=`✦ ${

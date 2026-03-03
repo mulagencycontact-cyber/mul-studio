@@ -15,7 +15,7 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) };
   }
 
-  const { imageBase64, mode } = body; // mode: "upscale" | "face" | "both"
+  const { imageBase64, mode, productBase64, prompt } = body;
 
   if (!imageBase64) {
     return { statusCode: 400, body: JSON.stringify({ error: "No image provided" }) };
@@ -29,7 +29,37 @@ exports.handler = async function (event) {
   try {
     let resultUrl = null;
 
-    // ── Step 1: Upscale with Real-ESRGAN ──────────────────────────────────
+    // ── Product Placement mode ─────────────────────────────────────────────
+    if (mode === "placement") {
+      if (!prompt) {
+        return { statusCode: 400, body: JSON.stringify({ error: "No placement prompt provided" }) };
+      }
+
+      // Use stable-diffusion-inpainting for product placement
+      const placementRes = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          version: "95b7223104132402a9ae91cc677285bc5eb997834bd2349fa486f53910fd68b3",
+          input: {
+            image: imageBase64,
+            prompt: prompt,
+            num_inference_steps: 25,
+            guidance_scale: 7.5,
+            strength: 0.8,
+          },
+        }),
+      });
+
+      const placementData = await placementRes.json();
+      resultUrl = await pollPrediction(placementData.id, headers);
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ outputUrl: resultUrl }),
+      };
+    }
+
+    // ── Upscale with Real-ESRGAN ───────────────────────────────────────────
     if (mode === "upscale" || mode === "both") {
       const upscaleRes = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST",
@@ -43,16 +73,13 @@ exports.handler = async function (event) {
           },
         }),
       });
-
       const upscaleData = await upscaleRes.json();
       resultUrl = await pollPrediction(upscaleData.id, headers);
     }
 
-    // ── Step 2: Face Restore with CodeFormer ──────────────────────────────
+    // ── Face Restore with CodeFormer ──────────────────────────────────────
     if (mode === "face" || mode === "both") {
       const faceInput = resultUrl ? resultUrl : imageBase64;
-      const isUrl = typeof faceInput === "string" && faceInput.startsWith("http");
-
       const faceRes = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST",
         headers,
@@ -67,7 +94,6 @@ exports.handler = async function (event) {
           },
         }),
       });
-
       const faceData = await faceRes.json();
       resultUrl = await pollPrediction(faceData.id, headers);
     }
@@ -84,12 +110,11 @@ exports.handler = async function (event) {
   }
 };
 
-// Poll Replicate until prediction is done
 async function pollPrediction(predictionId, headers) {
   const url = `https://api.replicate.com/v1/predictions/${predictionId}`;
   for (let i = 0; i < 60; i++) {
     await sleep(2000);
-    const res = await fetch(url, { headers });
+    const res  = await fetch(url, { headers });
     const data = await res.json();
     if (data.status === "succeeded") {
       return Array.isArray(data.output) ? data.output[0] : data.output;

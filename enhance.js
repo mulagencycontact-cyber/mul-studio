@@ -36,7 +36,7 @@ exports.handler = async function (event) {
       const res = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST", headers,
         body: JSON.stringify({
-          version: "95b7223104132402a9ae91cc677285bc5eb997834bd2349fa486f53910fd68b3",
+          version: "version: "a9758cbfbd5f3c2094457d996681af52552901510509ed40f09ea1420b68bd8b",
           input,
         }),
       });

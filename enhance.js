@@ -23,27 +23,27 @@ exports.handler = async function (event) {
   try {
     let resultUrl = null;
 
-    if (mode === "placement") {
-      if (!prompt) return { statusCode: 400, body: JSON.stringify({ error: "No prompt provided" }) };
-      const input = {
+   if (mode === "placement") {
+  if (!prompt) return { statusCode: 400, body: JSON.stringify({ error: "No prompt provided" }) };
+
+  const res = await fetch("https://api.replicate.com/v1/models/stability-ai/stable-diffusion-img2img/predictions", {
+    method: "POST", headers,
+    body: JSON.stringify({
+      input: {
         image: imageBase64,
         prompt: `${prompt}, photorealistic, high quality, professional photography, seamlessly integrated`,
+        prompt_strength: 0.75,
         num_inference_steps: 30,
         guidance_scale: 7.5,
-        strength: 0.85,
-      };
-      if (maskBase64) input.mask = maskBase64;
-      const res = await fetch("https://api.replicate.com/v1/predictions", {
-        method: "POST", headers,
-        body: JSON.stringify({
-          version: "version: "a9758cbfbd5f3c2094457d996681af52552901510509ed40f09ea1420b68bd8b",
-          input,
-        }),
-      });
-      const data = await res.json();
-      resultUrl = await pollPrediction(data.id, headers);
-      return { statusCode: 200, body: JSON.stringify({ outputUrl: resultUrl }) };
-    }
+      },
+    }),
+  });
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  resultUrl = await pollPrediction(data.id, headers);
+  return { statusCode: 200, body: JSON.stringify({ outputUrl: resultUrl }) };
+}
 
     if (mode === "upscale" || mode === "both") {
       const res = await fetch("https://api.replicate.com/v1/predictions", {

@@ -5,7 +5,7 @@ exports.handler = async function (event) {
 
   const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
   if (!REPLICATE_API_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: "API key not configured" }) };
+    return { statusCode: 500, body: JSON.stringify({ error: "REPLICATE_API_KEY is not set in environment variables" }) };
   }
 
   let body;
@@ -23,30 +23,49 @@ exports.handler = async function (event) {
   try {
     let resultUrl = null;
 
-if (mode === "placement") {
-  if (!prompt) return { statusCode: 400, body: JSON.stringify({ error: "No prompt provided" }) };
+    // ── Product Placement ─────────────────────────────────────────────────
+    if (mode === "placement") {
+      if (!prompt) return { statusCode: 400, body: JSON.stringify({ error: "No prompt provided" }) };
 
-  const res = await fetch("https://api.replicate.com/v1/predictions", {
-    method: "POST", headers,
-    body: JSON.stringify({
-      version: "e490d072a34a94a11e9711ed5a6ba621c3fab884eda1665d9d3a282d65a21180",
-      input: {
-        prompt: `${prompt}, photorealistic, high quality, professional photography`,
-        image: imageBase64,
-        mask: maskBase64 || null,
-        num_inference_steps: 25,
-        guidance_scale: 7.5,
-        inpaint_full_res: true,
-      },
-    }),
-  });
+      // Use stable-diffusion img2img via the deployment endpoint
+      const requestBody = {
+        version: "e490d072a34a94a11e9711ed5a6ba621c3fab884eda1665d9d3a282d65a21180",
+        input: {
+          prompt: `${prompt}, photorealistic, high quality, professional photography, seamlessly integrated`,
+          image: imageBase64,
+          num_inference_steps: 25,
+          guidance_scale: 7.5,
+          strength: 0.75,
+        },
+      };
 
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  resultUrl = await pollPrediction(data.id, headers);
-  return { statusCode: 200, body: JSON.stringify({ outputUrl: resultUrl }) };
-}
+      if (maskBase64) requestBody.input.mask = maskBase64;
 
+      const predRes = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(requestBody),
+      });
+
+      const predText = await predRes.text();
+      let predData;
+      try { predData = JSON.parse(predText); }
+      catch { return { statusCode: 500, body: JSON.stringify({ error: `Replicate returned non-JSON: ${predText.slice(0, 200)}` }) }; }
+
+      if (!predRes.ok || predData.error) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({
+            error: `Replicate error (${predRes.status}): ${predData.error || predData.detail || JSON.stringify(predData)}`
+          })
+        };
+      }
+
+      resultUrl = await pollPrediction(predData.id, headers);
+      return { statusCode: 200, body: JSON.stringify({ outputUrl: resultUrl }) };
+    }
+
+    // ── Upscale with Real-ESRGAN ───────────────────────────────────────────
     if (mode === "upscale" || mode === "both") {
       const res = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST", headers,
@@ -56,9 +75,11 @@ if (mode === "placement") {
         }),
       });
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
       resultUrl = await pollPrediction(data.id, headers);
     }
 
+    // ── Face Restore with CodeFormer ──────────────────────────────────────
     if (mode === "face" || mode === "both") {
       const faceInput = resultUrl || imageBase64;
       const res = await fetch("https://api.replicate.com/v1/predictions", {
@@ -69,6 +90,7 @@ if (mode === "placement") {
         }),
       });
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
       resultUrl = await pollPrediction(data.id, headers);
     }
 
@@ -85,7 +107,9 @@ async function pollPrediction(id, headers) {
     const res  = await fetch(`https://api.replicate.com/v1/predictions/${id}`, { headers });
     const data = await res.json();
     if (data.status === "succeeded") return Array.isArray(data.output) ? data.output[0] : data.output;
-    if (data.status === "failed" || data.status === "canceled") throw new Error(`Prediction ${data.status}: ${data.error || "unknown"}`);
+    if (data.status === "failed" || data.status === "canceled") {
+      throw new Error(`Replicate prediction ${data.status}: ${data.error || "unknown error"}`);
+    }
   }
   throw new Error("Timed out after 2 minutes");
 }
